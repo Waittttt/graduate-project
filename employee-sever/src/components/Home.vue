@@ -4,17 +4,19 @@
       <div>
         <span>员工自助后台</span>
       </div>
-      <a-button type="primary" @click="loginOut">退出</a-button>
+      <div>
+        <span style="margin-right:5px">你好,{{username}}</span>
+        <a-button type="primary" @click="loginOut">退出</a-button>
+      </div>
     </a-layout-header>
     <a-layout>
       <a-layout-sider class="sider">
         <div>
           <a-menu
-            v-model:openKeys="openKeys"
             v-model:selectedKeys="selectedKeys"
             mode="inline"
             theme="dark"
-            :inline-collapsed="collapsed"
+
           >
             <a-menu-item key="1">
               <template #icon>
@@ -51,7 +53,7 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import {
   PieChartOutlined,
@@ -67,12 +69,18 @@ export default defineComponent({
   },
   setup () {
     const router = useRouter()
+    const selectedKeys = ref(['1'])
+    const username = ref(localStorage.getItem('username'))
 
     function loginOut () {
+      localStorage.removeItem('username')
+      localStorage.removeItem('userid')
       router.push('/login')
     }
     return {
-      loginOut
+      loginOut,
+      selectedKeys,
+      username
     }
   }
 })

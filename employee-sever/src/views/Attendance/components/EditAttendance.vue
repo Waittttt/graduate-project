@@ -1,11 +1,9 @@
 <template>
-  <h3>姓名-{{ user.username }}</h3>
-  <h3>部门-{{user.depart}}</h3>
+  <h3>补签卡申请-{{user|| ''}}</h3>
   <a-form :model="form" :label-col="{ span: 4 }" :wrapper-col="{ span: 16 }">
     <a-form-item
       label="补签日期"
       name="date"
-      format="YYYY-MM-DD"
       :rules="[{ required: true, message: '请填写补签日期' }]"
     >
       <a-space direction="vertical" :size="12">
@@ -29,9 +27,7 @@
     <a-form-item>
       <div style="display: flex; justify-content: end">
         <a-button type="primary" @click="submit">提交</a-button>
-        <a-button type="danger" style="margin-left: 5px" @click="close"
-          >取消</a-button
-        >
+        <a-button type="danger" style="margin-left:5px" @click="close">取消</a-button>
       </div>
     </a-form-item>
   </a-form>
@@ -39,26 +35,23 @@
 
 <script>
 import { ref } from 'vue'
-import axios from 'axios'
-import { baseURL } from '../../../utils/constant'
 import { message } from 'ant-design-vue'
+
 export default {
   props: {
-    // user: {
-    //   type: String,
-    //   default: () => ''
-    // }
+    user: {
+      type: String
+    },
+    row: {
+      type: Object,
+      default: () => ({})
+    }
   },
   emits: ['submit', 'close'],
   setup (props, { emit }) {
     const form = ref({
       date: '',
       reason: ''
-    })
-
-    const user = ref({
-      username: localStorage.getItem('username'),
-      depart: localStorage.getItem('department')
     })
 
     function checkForm (form) {
@@ -72,18 +65,17 @@ export default {
       return true
     }
 
-    async function submit () {
-      try {
-        const params = { ...form.value, user_id: localStorage.getItem('userid') }
-        const validate = checkForm(params)
-        if (validate !== true) {
-          message.error(validate)
-          return
-        }
-        await axios.post(`${baseURL}/addAttendance`, { ...params })
-
-        emit('submit')
-      } catch (error) {}
+    function submit () {
+      const params = { ...form.value }
+      const validate = checkForm(params)
+      if (validate !== true) {
+        message.error(validate)
+        return
+      }
+      console.log({
+        ...form.value
+      })
+      emit('submit')
     }
 
     function close () {
@@ -92,7 +84,6 @@ export default {
 
     return {
       form,
-      user,
       submit,
       close
     }

@@ -42,18 +42,44 @@
 </template>
 
 <script>
+import axios from 'axios'
+import { baseURL } from '../utils/constant.js'
+import { useRouter } from 'vue-router'
 import { defineComponent, ref } from 'vue'
+import { message } from 'ant-design-vue'
 
 export default defineComponent({
   setup () {
+    const router = useRouter()
     const formRef = ref(null)
     const form = ref({
       username: '',
       password: ''
     })
 
-    function login () {
-      console.log(form.value)
+    async function login () {
+      const params = {
+        ...form.value
+      }
+
+      try {
+        const { data } = await axios.post(`${baseURL}/login`, {
+          ...params
+        })
+        if (data.code !== 200) {
+          message.error(data.msg)
+          return
+        }
+        message.success(data.msg)
+        console.log(data)
+        const userInfo = data.data
+        localStorage.setItem('username', userInfo.username)
+        localStorage.setItem('department', userInfo.department)
+        localStorage.setItem('userid', userInfo.id)
+        router.push('/attendance')
+      } catch (error) {
+
+      }
     }
 
     function reset () {
