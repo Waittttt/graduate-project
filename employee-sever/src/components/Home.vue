@@ -4,7 +4,7 @@
       <div>
         <span>员工自助后台</span>
       </div>
-      <a-button type="primary">退出</a-button>
+      <a-button type="primary" @click="loginOut">退出</a-button>
     </a-layout-header>
     <a-layout>
       <a-layout-sider class="sider">
@@ -18,36 +18,62 @@
           >
             <a-menu-item key="1">
               <template #icon>
-                <PieChartOutlined />
-              </template>
-              <span>考勤异常</span>
+                  <PieChartOutlined />
+                </template>
+              <router-link to="/attendance">
+                <span>考勤异常</span>
+              </router-link>
             </a-menu-item>
             <a-menu-item key="2">
               <template #icon>
-                <DesktopOutlined />
+                <InboxOutlined />
               </template>
-              <span>节假日加班</span>
+              <router-link to="/applywork">
+                <span>节假日加班申请</span>
+              </router-link>
             </a-menu-item>
             <a-menu-item key="3">
               <template #icon>
-                <InboxOutlined />
+                <DesktopOutlined />
               </template>
               <span>IT资产申请</span>
             </a-menu-item>
           </a-menu>
         </div>
       </a-layout-sider>
-      <a-layout-content>Content</a-layout-content>
+      <a-layout-content class="content_area">
+        <div class="content_box">
+          <router-view></router-view>
+        </div>
+      </a-layout-content>
     </a-layout>
   </a-layout>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
+import { useRouter } from 'vue-router'
+import {
+  PieChartOutlined,
+  DesktopOutlined,
+  InboxOutlined
+} from '@ant-design/icons-vue'
 
 export default defineComponent({
+  components: {
+    PieChartOutlined,
+    DesktopOutlined,
+    InboxOutlined
+  },
   setup () {
-    return {}
+    const router = useRouter()
+
+    function loginOut () {
+      router.push('/login')
+    }
+    return {
+      loginOut
+    }
   }
 })
 </script>
@@ -66,6 +92,13 @@ export default defineComponent({
 }
 .sider {
   color: white;
-
+}
+.content_area{
+  padding: 10px;
+}
+.content_box{
+  border: 1px solid #fff;
+  box-shadow: 0 0 10px #eee;
+  height:100%;
 }
 </style>

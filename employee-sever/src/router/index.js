@@ -1,5 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../components/Home.vue'
+import Welcome from '../components/Welcome.vue'
+import Attendance from '../views/Attendance'
+import ApplyWork from '../views/ApplyWork'
 import Login from '../components/Login.vue'
 
 const routes = [
@@ -9,7 +12,14 @@ const routes = [
         component: Login
     }, {
         path: '/home',
-        component: Home
+        component: Home,
+        redirect: '/welcome',
+        children: [
+            { path: '/welcome', component: Welcome },
+            { path: '/attendance', component: Attendance },
+            { path: '/applywork', component: ApplyWork }
+
+        ]
     }
 ]
 
