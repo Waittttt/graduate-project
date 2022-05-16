@@ -1,5 +1,5 @@
 <template>
-  <h3>补签卡申请-{{user|| ''}}</h3>
+  <h3>补签卡申请-{{ user || "" }}</h3>
   <a-form :model="form" :label-col="{ span: 4 }" :wrapper-col="{ span: 16 }">
     <a-form-item
       label="补签日期"
@@ -27,7 +27,9 @@
     <a-form-item>
       <div style="display: flex; justify-content: end">
         <a-button type="primary" @click="submit">提交</a-button>
-        <a-button type="danger" style="margin-left:5px" @click="close">取消</a-button>
+        <a-button type="danger" style="margin-left: 5px" @click="close"
+          >取消</a-button
+        >
       </div>
     </a-form-item>
   </a-form>
@@ -35,6 +37,8 @@
 
 <script>
 import { ref } from 'vue'
+import axios from 'axios'
+import { baseURL } from '../../../utils/constant'
 import { message } from 'ant-design-vue'
 
 export default {
@@ -54,6 +58,8 @@ export default {
       reason: ''
     })
 
+    console.log(props.row)
+
     function checkForm (form) {
       if (!form.date) {
         return '请填写补签日期'
@@ -65,17 +71,17 @@ export default {
       return true
     }
 
-    function submit () {
-      const params = { ...form.value }
-      const validate = checkForm(params)
-      if (validate !== true) {
-        message.error(validate)
-        return
-      }
-      console.log({
-        ...form.value
-      })
-      emit('submit')
+    async function submit () {
+      try {
+        const params = { ...form.value }
+        const validate = checkForm(params)
+        if (validate !== true) {
+          message.error(validate)
+          return
+        }
+        await axios.post(`${baseURL}/editAttendance`, { ...params })
+        emit('submit')
+      } catch (error) {}
     }
 
     function close () {

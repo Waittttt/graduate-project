@@ -1,7 +1,9 @@
 /* eslint-disable space-before-function-paren */
 const express = require('express')
 const { user } = require('./server/user')
+const { work } = require('./server/work')
 const { attendance } = require('./server/attendance')
+const { device } = require('./server/device')
     // const { db } = require('./utils/db')
 
 const app = express()
@@ -26,6 +28,12 @@ app.post('/login', (req, res) => {
         }
         console.log('getuser', u)
     })
+})
+
+app.get('/user/:id', async(req, res) => {
+    const result = await user.getUserById(req.params.id)
+
+    res.send({ code: 200, msg: '请求成功', data: result })
 })
 
 app.get('/attendance', async(req, res) => {
@@ -84,7 +92,146 @@ app.post('/deleteAttendance', (req, res) => {
 })
 
 app.post('/editAttendance', (req, res) => {
+    let json = null
+    req.on('data', (chunk) => {
+        const str = Buffer.from(chunk).toString()
+        json = JSON.parse(str)
+    })
+    req.on('end', async() => {
+        const result = await attendance.edit(json)
+        console.log('result', result)
+        res.send(result)
+    })
+})
 
+app.get('/work', async(req, res) => {
+    const { user_id: userId, type } = req.query
+    const result = await work.getAll(userId, type)
+        // const user1 = await user.getUserById(userId)
+        // result.forEach(item => {
+        //     item.username = user1[0].username
+        // })
+        // console.log(result)
+
+    res.send({
+        code: 200,
+        msg: '请求成功',
+        data: result
+    })
+})
+
+app.get('/work/:id', async(req, res) => {
+    const result = await work.getWorkById(req.params.id)
+
+    res.send({
+        code: 200,
+        msg: '请求成功',
+        data: result
+    })
+})
+
+app.post('/addWork', (req, res) => {
+    let json = null
+    req.on('data', (chunk) => {
+        const str = Buffer.from(chunk).toString()
+        json = JSON.parse(str)
+    })
+    req.on('end', async() => {
+        const result = await work.add(json)
+        console.log('result', result)
+        res.send(result)
+    })
+})
+
+app.post('/editWork', (req, res) => {
+    let json = null
+    req.on('data', (chunk) => {
+        const str = Buffer.from(chunk).toString()
+        json = JSON.parse(str)
+    })
+    req.on('end', async() => {
+        const result = await work.editWork(json)
+        console.log('result', result)
+        res.send(result)
+    })
+})
+
+app.post('/deleteWork', (req, res) => {
+    let json = null
+    req.on('data', (chunk) => {
+        const str = Buffer.from(chunk).toString()
+        json = JSON.parse(str)
+    })
+    req.on('end', async() => {
+        const result = await work.deleteWork(json)
+        console.log('result', result)
+        res.send(result)
+    })
+})
+
+app.get('/device', async(req, res) => {
+    const { user_id: userId, num, name } = req.query
+    const result = await device.getAll(userId, num, name)
+        // const user1 = await user.getUserById(userId)
+        // result.forEach(item => {
+        //     item.username = user1[0].username
+        // })
+        // console.log(result)
+
+    res.send({
+        code: 200,
+        msg: '请求成功',
+        data: result
+    })
+})
+
+app.get('/device/:id', async(req, res) => {
+    const result = await device.getDeviceById(req.params.id)
+
+    res.send({
+        code: 200,
+        msg: '请求成功',
+        data: result
+    })
+})
+
+app.post('/addDevice', (req, res) => {
+    let json = null
+    req.on('data', (chunk) => {
+        const str = Buffer.from(chunk).toString()
+        json = JSON.parse(str)
+    })
+    req.on('end', async() => {
+        const result = await device.add(json)
+        console.log('result', result)
+        res.send(result)
+    })
+})
+
+app.post('/deleteDevice', (req, res) => {
+    let json = null
+    req.on('data', (chunk) => {
+        const str = Buffer.from(chunk).toString()
+        json = JSON.parse(str)
+    })
+    req.on('end', async() => {
+        const result = await device.deleteDevice(json)
+        console.log('result', result)
+        res.send(result)
+    })
+})
+
+app.post('/editDevice', (req, res) => {
+    let json = null
+    req.on('data', (chunk) => {
+        const str = Buffer.from(chunk).toString()
+        json = JSON.parse(str)
+    })
+    req.on('end', async() => {
+        const result = await device.editDevice(json)
+        console.log('result', result)
+        res.send(result)
+    })
 })
 
 app.listen(PORT, () => {

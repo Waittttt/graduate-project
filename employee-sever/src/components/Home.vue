@@ -31,14 +31,24 @@
                 <InboxOutlined />
               </template>
               <router-link to="/applywork">
-                <span>节假日加班申请</span>
+                <span>加班申请</span>
               </router-link>
             </a-menu-item>
             <a-menu-item key="3">
               <template #icon>
                 <DesktopOutlined />
               </template>
-              <span>IT资产申请</span>
+              <router-link to="/applydevice">
+                <span>资产申请</span>
+              </router-link>
+            </a-menu-item>
+            <a-menu-item key="4">
+              <template #icon>
+                <DesktopOutlined />
+              </template>
+              <router-link to="/userinfo">
+                <span>个人中心</span>
+              </router-link>
             </a-menu-item>
           </a-menu>
         </div>

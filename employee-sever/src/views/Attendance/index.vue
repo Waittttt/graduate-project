@@ -16,43 +16,44 @@
           type="primary"
           html-type="submit"
           :disabled="searchForm.reason === ''"
-          style="margin-left:5px"
+          style="margin-left: 5px"
           @click="search"
         >
           搜索
         </a-button>
-
       </a-form-item>
       <a-form-item>
-        <a-button @click="reset" style="margin-left:5px">重置</a-button>
+        <a-button @click="reset" style="margin-left: 5px">重置</a-button>
       </a-form-item>
     </a-form>
-    <a-button
-      type="primary"
-      @click="applyAttendance"
-      >前往补签</a-button
-    >
+    <a-button type="primary" @click="applyAttendance">申请补签</a-button>
     <a-modal
       v-model:visible="visible"
       title="提交补签申请"
       :footer="null"
       destroyOnClose
     >
-      <ApplyAttendance  @submit="handleSubmit" @close="closeAdd" />
+      <ApplyAttendance @submit="handleSubmit" @close="closeAdd" />
     </a-modal>
   </div>
   <a-table bordered :dataSource="dataSource" :columns="columns">
     <template #bodyCell="{ column, record }">
       <template v-if="column.dataIndex === 'operator'">
         <!-- <a-button type="primary" @click="showDetail(record)">查看详情</a-button> -->
-        <a-button type="primary" @click="editApply" style="margin-right:5px">编辑申请</a-button>
+        <a-button type="primary" @click="editApply" style="margin-right: 5px"
+          >编辑申请</a-button
+        >
         <a-modal
           v-model:visible="editVisible"
           title="编辑补签申请"
           :footer="null"
           destroyOnClose
         >
-          <EditAttendance :user="dataSource[0].name" :row="record" @submit="handleSubmit" @close="closeEdit" />
+          <EditAttendance
+            :row="record"
+            @submit="handleSubmit"
+            @close="closeEdit"
+          />
         </a-modal>
         <!-- <a-drawer
           v-model:visible="drawVisible"
@@ -69,11 +70,8 @@
           cancel-text="取消"
           @confirm="deleteApply(record.id)"
         >
-          <a-button type="danger"
-          >取消申请</a-button
-        >
+          <a-button type="danger">取消申请</a-button>
         </a-popconfirm>
-
       </template>
     </template>
   </a-table>
@@ -143,10 +141,11 @@ export default {
           params
         })
         console.log(data)
-        dataSource.value = (data.data || []).map(item => ({ ...item, date: dayjs(item.date).format('YYYY-MM-DD') }))
-      } catch (error) {
-
-      }
+        dataSource.value = (data.data || []).map((item) => ({
+          ...item,
+          date: dayjs(item.date).format('YYYY-MM-DD')
+        }))
+      } catch (error) {}
     }
     getList()
     const visible = ref(false)
@@ -183,9 +182,7 @@ export default {
         await axios.post(`${baseURL}/deleteAttendance`, { ...params })
         message.success('取消申请成功')
         await getList()
-      } catch (error) {
-
-      }
+      } catch (error) {}
     }
 
     async function handleSubmit () {

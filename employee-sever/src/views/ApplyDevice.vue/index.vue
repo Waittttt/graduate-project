@@ -5,15 +5,20 @@
       style="display: flex; width: 200px; justify-content: space-between"
     >
       <a-form-item>
-        <a-select
-          v-model:value="searchForm.type"
+        <a-input
+          v-model:value="searchForm.num"
           style="width: 200px"
-          placeholder="请选择加班类型"
+          placeholder="请输入设备编号"
         >
-          <a-select-option value="">全部</a-select-option>
-          <a-select-option value="双休日加班">双休日加班</a-select-option>
-          <a-select-option value="节假日加班">节假日加班</a-select-option>
-        </a-select>
+        </a-input>
+      </a-form-item>
+      <a-form-item>
+        <a-input
+          v-model:value="searchForm.name"
+          style="width: 200px;margin-left:5px"
+          placeholder="请输入设备名称"
+        >
+        </a-input>
       </a-form-item>
       <a-form-item>
         <a-button
@@ -29,58 +34,45 @@
         <a-button @click="reset" style="margin-left: 5px">重置</a-button>
       </a-form-item>
     </a-form>
-    <a-button type="primary" @click="applyWork">申请加班</a-button>
+    <a-button type="primary" @click="applyWork">申请资产</a-button>
     <a-modal
       v-model:visible="addVisible"
-      title="新增加班申请"
+      title="新增资产申请"
       :footer="null"
       destroyOnClose
     >
       <a-form :model="addForm">
         <a-form-item
-          label="加班类型:"
-          name="type"
-          :rules="[{ required: true, message: '请选择加班类型!' }]"
+          label="资产名称:"
+          name="name"
+          :rules="[{ required: true, message: '请选择资产名称!' }]"
         >
           <a-select
-            v-model:value="addForm.type"
+            v-model:value="addForm.name"
             style="width: 200px"
-            placeholder="请选择加班类型"
+            placeholder="请选择资产名称"
           >
-            <a-select-option value="双休日加班">双休日加班</a-select-option>
-            <a-select-option value="节假日加班">节假日加班</a-select-option>
+            <a-select-option value="Mac mini">Mac mini</a-select-option>
+            <a-select-option value="笔记本">笔记本</a-select-option>
+            <a-select-option value="台式机">台式机</a-select-option>
+            <a-select-option value="显示器">显示器</a-select-option>
+            <a-select-option value="测试机">测试机</a-select-option>
+            <a-select-option value="办公升降桌">办公升降桌</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item
-          label="工作地点:"
-          name="address"
-          :rules="[{ required: true, message: '请选择工作地点!' }]"
+          label="申请数量:"
+          name="count"
+          :rules="[{ required: true, message: '请输入申请数量!' }]"
         >
-          <a-select
-            v-model:value="addForm.address"
-            style="width: 200px"
-            placeholder="请选择工作地点"
-          >
-            <a-select-option value="公司内">公司内</a-select-option>
-            <a-select-option value="公司外">公司外</a-select-option>
-          </a-select>
+          <a-input v-model:value="addForm.count" />
         </a-form-item>
         <a-form-item
-          label="工作事由:"
+          label="申请原因:"
           name="reason"
-          :rules="[{ required: true, message: '请输入工作事由!' }]"
+          :rules="[{ required: true, message: '请输入申请原因!' }]"
         >
           <a-input v-model:value="addForm.reason"></a-input>
-        </a-form-item>
-        <a-form-item
-          label="工作时间:"
-          name="date"
-          :rules="[{ required: true, message: '请选择工作时间!' }]"
-        >
-          <a-date-picker
-            v-model:value="addForm.date"
-            valueFormat="YYYY-MM-DD"
-          ></a-date-picker>
         </a-form-item>
         <a-form-item>
           <div style="display: flex; justify-content: end">
@@ -101,8 +93,13 @@
           cancel-text="取消"
           @confirm="deleteWork(record.id)"
         >
-          <a-button type="danger" style="margin-left: 5px">删除</a-button>
+          <a-button
+          type="danger"
+          style="margin-left: 5px"
+          >删除</a-button
+        >
         </a-popconfirm>
+
       </template>
     </template>
   </a-table>
@@ -112,52 +109,50 @@
     :footer="null"
     destroyOnClose
   >
-    <a-form :model="editForm">
+    <a-form :model="editForm" :labelCol="{span:6}">
       <a-form-item
-        label="加班类型:"
-        name="type"
-        :rules="[{ required: true, message: '请选择加班类型!' }]"
-      >
-        <a-select
-          v-model:value="editForm.type"
-          style="width: 200px"
-          placeholder="请选择加班类型"
+          label="资产名称:"
+          name="name"
+          :rules="[{ required: true, message: '请选择资产名称!' }]"
         >
-          <a-select-option value="双休日加班">双休日加班</a-select-option>
-          <a-select-option value="节假日加班">节假日加班</a-select-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item
-        label="工作地点:"
-        name="address"
-        :rules="[{ required: true, message: '请选择工作地点!' }]"
-      >
-        <a-select
-          v-model:value="editForm.address"
-          style="width: 200px"
-          placeholder="请选择工作地点"
+          <a-select
+            v-model:value="editForm.name"
+            style="width: 200px"
+            placeholder="请选择资产名称"
+          >
+            <a-select-option value="Mac mini">Mac mini</a-select-option>
+            <a-select-option value="笔记本">笔记本</a-select-option>
+            <a-select-option value="台式机">台式机</a-select-option>
+            <a-select-option value="显示器">显示器</a-select-option>
+            <a-select-option value="测试机">测试机</a-select-option>
+            <a-select-option value="办公升降桌">办公升降桌</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item
+          label="资产编号:"
         >
-          <a-select-option value="公司内">公司内</a-select-option>
-          <a-select-option value="公司外">公司外</a-select-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item
-        label="工作事由:"
-        name="reason"
-        :rules="[{ required: true, message: '请输入工作事由!' }]"
-      >
-        <a-input v-model:value="editForm.reason"></a-input>
-      </a-form-item>
-      <a-form-item
-        label="工作时间:"
-        name="date"
-        :rules="[{ required: true, message: '请选择工作时间!' }]"
-      >
-        <a-date-picker
-          v-model:value="editForm.date"
-          valueFormat="YYYY-MM-DD"
-        ></a-date-picker>
-      </a-form-item>
+          <a-input v-model:value="editForm.num" disabled />
+        </a-form-item>
+        <a-form-item
+          label="申请日期:"
+        >
+          <a-date-picker v-model:value="editForm.date" valueFormat="YYYY-MM-DD" disabled ></a-date-picker>
+        </a-form-item>
+        <a-form-item
+          label="申请数量:"
+          name="count"
+          :rules="[{ required: true, message: '请输入申请数量!' }]"
+        >
+          <a-input v-model:value="editForm.count" />
+        </a-form-item>
+
+        <a-form-item
+          label="申请原因:"
+          name="reason"
+          :rules="[{ required: true, message: '请输入申请原因!' }]"
+        >
+          <a-input v-model:value="editForm.reason"></a-input>
+        </a-form-item>
       <a-form-item>
         <div style="display: flex; justify-content: end">
           <a-button type="primary" @click="submitEdit">提交</a-button>
@@ -177,21 +172,20 @@ import dayjs from 'dayjs'
 export default {
   setup () {
     const searchForm = ref({
-      type: ''
+      num: '',
+      name: ''
     })
 
     const addForm = ref({
-      type: '',
-      address: '',
-      reason: '',
-      date: ''
+      name: '',
+      count: '',
+      reason: ''
     })
 
     const editForm = ref({
-      type: '',
-      address: '',
-      reason: '',
-      date: ''
+      name: '',
+      count: '',
+      reason: ''
     })
 
     const addVisible = ref(false)
@@ -205,22 +199,27 @@ export default {
         key: 'id'
       },
       {
-        title: '加班类型',
-        dataIndex: 'type',
-        key: 'type'
+        title: '设备名称',
+        dataIndex: 'name',
+        key: 'name'
       },
       {
-        title: '工作地点',
-        dataIndex: 'address',
-        key: 'address'
+        title: '设备编号',
+        dataIndex: 'num',
+        key: 'num'
       },
       {
-        title: '工作事由',
+        title: '申请数量',
+        dataIndex: 'count',
+        key: 'count'
+      },
+      {
+        title: '申请原因',
         dataIndex: 'reason',
         key: 'reason'
       },
       {
-        title: '工作时间',
+        title: '申请时间',
         dataIndex: 'date',
         key: 'date'
       },
@@ -238,7 +237,7 @@ export default {
       }
 
       try {
-        const { data } = await axios.get(`${baseURL}/work`, {
+        const { data } = await axios.get(`${baseURL}/device`, {
           params
         })
         console.log(data)
@@ -252,11 +251,12 @@ export default {
     getList()
 
     async function search () {
-      await getList({ ...searchForm, type: searchForm.value.type.trim() })
+      await getList({ ...searchForm, num: searchForm.value.num.trim(), name: searchForm.value.name.trim() })
     }
 
     async function reset () {
-      searchForm.value.type = ''
+      searchForm.value.num = ''
+      searchForm.value.name = ''
       await getList()
     }
 
@@ -271,7 +271,7 @@ export default {
       // }
 
       try {
-        const { data } = await axios.get(`${baseURL}/work/${id}`)
+        const { data } = await axios.get(`${baseURL}/device/${id}`)
         console.log(data)
         // dataSource.value = (data.data || []).map((item) => ({
         //   ...item,
@@ -285,15 +285,16 @@ export default {
     async function deleteWork (id) {
       const params = { id }
       try {
-        await axios.post(`${baseURL}/deleteWork`, { ...params })
-        handleSubmit()
-      } catch (error) {}
+        await axios.post(`${baseURL}/deleteDevice`, { ...params })
+        handleSubmit('删除')
+      } catch (error) {
+
+      }
     }
 
     function close () {
       addVisible.value = false
       editVisible.value = false
-      clearForm()
     }
 
     function checkForm (form) {
@@ -307,54 +308,40 @@ export default {
       return true
     }
 
-    function clearForm () {
-      addForm.value = {
-        type: '',
-        address: '',
-        reason: '',
-        date: ''
-      }
-      editForm.value = {
-        type: '',
-        address: '',
-        reason: '',
-        date: ''
-      }
-    }
-
-    function handleSubmit () {
-      message.success('提交成功')
-      clearForm()
-      close()
-      getList()
+    function handleSubmit (msg) {
+      message.success(`${msg}成功`)
+        close()
+        getList()
     }
 
     async function submitAdd () {
       try {
         const params = {
-          ...addForm.value,
-          user_id: localStorage.getItem('userid')
-        }
+      ...addForm.value,
+        user_id: localStorage.getItem('userid'),
+        num: Math.random().toString(16).slice(3),
+        date: dayjs(new Date()).format('YYYY-MM-DD')
+}
         const validate = checkForm(params)
         if (validate !== true) {
           message.error(validate)
           return
         }
-        await axios.post(`${baseURL}/addWork`, { ...params })
-        handleSubmit()
+        await axios.post(`${baseURL}/addDevice`, { ...params })
+        handleSubmit('添加')
       } catch (error) {}
     }
 
     async function submitEdit () {
       try {
-        const params = { ...editForm.value }
+        const params = { ...editForm.value, date: dayjs(new Date()).format('YYYY-MM-DD') }
         const validate = checkForm(params)
         if (validate !== true) {
           message.error(validate)
           return
         }
-        await axios.post(`${baseURL}/editWork`, { ...params })
-        handleSubmit()
+        await axios.post(`${baseURL}/editDevice`, { ...params })
+        handleSubmit('编辑')
       } catch (error) {}
     }
 
