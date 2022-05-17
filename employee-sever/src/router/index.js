@@ -5,6 +5,7 @@ import Attendance from '../views/Attendance'
 import ApplyWork from '../views/ApplyWork'
 import ApplyDevice from '../views/ApplyDevice.vue'
 import UserInfo from '../views/UserInfo'
+import UserMng from '../views/UserMng'
 import Login from '../components/Login.vue'
 
 const routes = [
@@ -24,7 +25,8 @@ const routes = [
                 path: '/applydevice',
                 component: ApplyDevice
             },
-            { path: '/userinfo', component: UserInfo }
+            { path: '/userinfo', component: UserInfo },
+            { path: '/usermng', component: UserMng }
 
         ]
     }

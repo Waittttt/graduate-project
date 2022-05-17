@@ -6,11 +6,12 @@
           <img src="../assets/icon.webp" />
           <div class="userinfo">
             <p class="name">{{applyData.username}}</p>
-            <!-- <p class="access">管理员</p> -->
+            <p class="access">{{applyData.auth==='true'?'管理员':'普通用户'}}</p>
           </div>
         </div>
         <div class="login-info">
-          <p>上次登录时间:<span>{{dayjs(new Date()).format('YYYY-MM-DD')}}</span></p>
+          <p>部门：{{applyData.department}}</p>
+          <p>上次登录时间：<span>{{dayjs(new Date()).format('YYYY-MM-DD')}}</span></p>
         </div>
       </a-card>
     </a-col>
@@ -86,6 +87,8 @@ export default {
   setup () {
     const applyData = ref({
       username: localStorage.getItem('username'),
+      auth: localStorage.getItem('auth'),
+      department: localStorage.getItem('department'),
       attendance: 0,
       work: 0,
       device: 0

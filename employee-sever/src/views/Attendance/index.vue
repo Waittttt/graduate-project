@@ -15,7 +15,6 @@
         <a-button
           type="primary"
           html-type="submit"
-          :disabled="searchForm.reason === ''"
           style="margin-left: 5px"
           @click="search"
         >

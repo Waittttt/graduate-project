@@ -54,6 +54,14 @@
               <template #icon>
                 <UserDeleteOutlined />
               </template>
+              <router-link to="/usermng">
+                <span>用户管理</span>
+              </router-link>
+            </a-menu-item>
+            <a-menu-item key="5">
+              <template #icon>
+                <UserDeleteOutlined />
+              </template>
               <router-link to="/userinfo">
                 <span>个人中心</span>
               </router-link>

@@ -30,10 +30,29 @@ app.post('/login', (req, res) => {
     })
 })
 
+app.get('/user', async(req, res) => {
+    const result = await user.getAll()
+
+    res.send({ code: 200, msg: '请求成功', data: result })
+})
+
 app.get('/user/:id', async(req, res) => {
     const result = await user.getUserById(req.params.id)
 
     res.send({ code: 200, msg: '请求成功', data: result })
+})
+
+app.post('/user/auth', async(req, res) => {
+    let json = null
+    req.on('data', (chunk) => {
+        const str = Buffer.from(chunk).toString()
+        json = JSON.parse(str)
+    })
+    req.on('end', async() => {
+        const result = await user.editUser(json)
+        console.log('result', result)
+        res.send(result)
+    })
 })
 
 app.get('/attendance', async(req, res) => {

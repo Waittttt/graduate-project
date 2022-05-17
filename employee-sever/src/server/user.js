@@ -11,8 +11,9 @@ const user = {
         const sql = 'select * from user where id = ?'
         return await db(sql, [id])
     },
-    getAll: () => {
-
+    getAll: async() => {
+        const sql = 'select * from user'
+        return await db(sql, [])
     },
     userLogin: async(json) => {
         const users = await user.getUserByName(json.username)
@@ -25,6 +26,15 @@ const user = {
             }
         }
         return await null
+    },
+    editUser: async(form) => {
+        console.log('form', form)
+        const { id, ...values } = form
+        console.log(values)
+        const sql = 'UPDATE user SET ? where id = ?'
+        const sqlParams = [values, id]
+        console.log('params', sqlParams)
+        return await db(sql, sqlParams)
     }
 }
 
