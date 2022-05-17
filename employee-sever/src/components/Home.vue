@@ -6,7 +6,7 @@
       </div>
       <div>
         <span style="margin-right:5px">你好,{{username}}</span>
-        <a-button type="primary" @click="loginOut">退出</a-button>
+        <a-button type="primary" danger @click="loginOut">退出</a-button>
       </div>
     </a-layout-header>
     <a-layout>
@@ -18,6 +18,14 @@
             theme="dark"
 
           >
+          <a-menu-item key="0">
+              <template #icon>
+                  <HomeOutlined />
+                </template>
+              <router-link to="/welcome">
+                <span>首页</span>
+              </router-link>
+            </a-menu-item>
             <a-menu-item key="1">
               <template #icon>
                   <PieChartOutlined />
@@ -44,7 +52,7 @@
             </a-menu-item>
             <a-menu-item key="4">
               <template #icon>
-                <DesktopOutlined />
+                <UserDeleteOutlined />
               </template>
               <router-link to="/userinfo">
                 <span>个人中心</span>
@@ -68,18 +76,22 @@ import { useRouter } from 'vue-router'
 import {
   PieChartOutlined,
   DesktopOutlined,
-  InboxOutlined
+  InboxOutlined,
+  HomeOutlined,
+  UserDeleteOutlined
 } from '@ant-design/icons-vue'
 
 export default defineComponent({
   components: {
+    HomeOutlined,
     PieChartOutlined,
     DesktopOutlined,
-    InboxOutlined
+    InboxOutlined,
+    UserDeleteOutlined
   },
   setup () {
     const router = useRouter()
-    const selectedKeys = ref(['1'])
+    const selectedKeys = ref(['0'])
     const username = ref(localStorage.getItem('username'))
 
     function loginOut () {
@@ -101,7 +113,7 @@ export default defineComponent({
   height: 100%;
 }
 .header {
-  background-color: #23ade5;
+  background-color: rgba(79, 70, 229);
   font-size: 18px;
   color: white;
   display: flex;

@@ -120,7 +120,7 @@ export default defineComponent({
         localStorage.setItem('username', userInfo.username)
         localStorage.setItem('department', userInfo.department)
         localStorage.setItem('userid', userInfo.id)
-        router.push('/attendance')
+        router.push('/welcome')
       } catch (error) {
 
       }

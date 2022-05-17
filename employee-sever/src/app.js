@@ -234,6 +234,17 @@ app.post('/editDevice', (req, res) => {
     })
 })
 
+app.get('/welcome', async(req, res) => {
+    console.log(req.query)
+    const r1 = await attendance.getAll(req.query.id)
+    const r2 = await work.getAll(req.query.id)
+    const r3 = await device.getAll(req.query.id)
+
+    const result = { attendance: r1.length, work: r2.length, device: r3.length }
+
+    res.send({ code: 200, msg: '请求成功', data: result })
+})
+
 app.listen(PORT, () => {
     console.log(`server is running in ${PORT}`)
 })
